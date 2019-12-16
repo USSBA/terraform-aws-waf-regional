@@ -24,8 +24,8 @@ resource "aws_wafregional_regex_match_set" "match_ipaddress_targeting" {
   }
 }
 resource "aws_wafregional_regex_pattern_set" "match_ipaddress_targeting" {
-  count = local.is_host_target_enabled
-  name  = "${var.waf_prefix}-generic-match-ipaddress-targeting"
+  count                 = local.is_host_target_enabled
+  name                  = "${var.waf_prefix}-generic-match-ipaddress-targeting"
   regex_pattern_strings = var.rule_host_target_regex_patterns
 }
 

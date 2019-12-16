@@ -290,34 +290,34 @@ variable "rule_ip_blacklist_ipv6" {
 
 # host targeting
 variable "rule_host_target" {
-  type = string
+  type        = string
   description = "COUNT or BLOCK, any other value will disable this rule entirely."
-  default = "DISABLED"
+  default     = "DISABLED"
 }
 variable "rule_host_target_priority" {
-  type = number
+  type        = number
   description = "The priority in which to execute this rule."
-  default = 5
+  default     = 5
 }
 variable "rule_host_target_regex_patterns" {
-  type = list(string)
+  type        = list(string)
   description = "A list of regex patterns to match against the host header of a request."
-  default = ["^ec2", "^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$", "amazonaws.com$"]
+  default     = ["^ec2", "^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$", "amazonaws.com$"]
 }
 
 # country of origin
 variable "rule_country_of_origin" {
-  type = string
+  type        = string
   description = "COUNT or BLOCK, any other value will disable this rule entirely."
-  default = "DISABLED"
+  default     = "DISABLED"
 }
 variable "rule_country_of_origin_priority" {
-  type = number
+  type        = number
   description = "The priority in which to execute this rule."
-  default = 6
+  default     = 6
 }
 variable "rule_country_of_origin_blacklist" {
-  type = list(string)
+  type        = list(string)
   description = "A blacklist of countries."
-  default = ["CN", "HK"]
+  default     = ["CN", "HK"]
 }

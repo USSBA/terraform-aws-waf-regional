@@ -11,14 +11,14 @@ resource "aws_wafregional_rule" "country_of_origin_filter" {
 }
 
 resource "aws_wafregional_geo_match_set" "geo_match_set" {
-  count       = local.is_country_of_origin_enabled
+  count = local.is_country_of_origin_enabled
   name  = "${var.waf_prefix}-geo-match-set"
 
   dynamic "geo_match_constraint" {
     iterator = x
     for_each = var.rule_country_of_origin_blacklist
     content {
-      type = "Country"
+      type  = "Country"
       value = x.value
     }
   }
