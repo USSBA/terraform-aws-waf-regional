@@ -16,26 +16,41 @@ commands:
     steps:
     - checkout
     - run:
-        name: Scanning for PII (Poirot)
+        name: Poirot (PII) Scan
         command: |
           poirot --patterns https://raw.githubusercontent.com/USSBA/terraform-aws-waf-regional/master/poirot-patterns.txt --revlist="master^..HEAD"
+  terraformscan:
+    steps:
+    - checkout
+    - run:
+        name: Terraform Init
+        command: |
+          terraform init
+    - run:
+        name: Terraform Validate
+        command: |
+          # a bug in my opinion, but region must be set for validate to work
+          export AWS_DEFAULT_REGION=us-east-1
+          terraform validate
+    - run:
+        name: Terraform Format Scan
+        command: |
+          terraform fmt -recursive -check
+
 jobs:
   poirot:
     executor: docker-poirot
     steps:
     - poirotscan
-  terraform-format-check:
+  terraform:
     docker:
     - image: hashicorp/terraform:light
     steps:
-    - checkout
-    - run:
-        name: Check terraform formatting
-        command: |
-          terraform fmt -recursive -check
+    - terraformscan
+
 workflows:
   version: 2
   branch_workflow:
     jobs:
     - poirot
-    - terraform-format-check
+    - terraform
