@@ -186,7 +186,7 @@ resource "aws_wafregional_web_acl" "waf_acl" {
 }
 resource "aws_wafregional_web_acl_association" "acl_cloudfront_association" {
   depends_on   = [aws_wafregional_web_acl.waf_acl]
-  count        = var.enabled == 1 ? length(var.alb_arns) : 0
+  count        = var.enabled ? length(var.alb_arns) : 0
   resource_arn = element(var.alb_arns, count.index)
   web_acl_id   = aws_wafregional_web_acl.waf_acl[0].id
 }
