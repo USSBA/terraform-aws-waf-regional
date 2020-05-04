@@ -143,9 +143,9 @@ Example configuration:
 
 Example configuration:
 ```
-  rule_xss                 = "BLOCK"
-  rule_xss_request_fields  = ["BODY", "URI", "QUERY_STRING"]
-  rule_xss_request_headers = ["cookie"]
+  rule_rfi_lfi             = "BLOCK"
+  rule_rfi_lfi_querystring = ["://", "../"]
+  rule_rfi_lfi_uri         = ["://", "../"]
 ```
 
 ### IP Whitelisted Paths ie: Admin Panel Restrictions
