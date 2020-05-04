@@ -1,6 +1,7 @@
 # OWASP Top 10 - A2
 # Bad or Hijacked Authorization Tokens
 # Matches patterns in the cookie or Authorization header
+
 resource "aws_wafregional_rule" "detect_bad_auth_tokens" {
   count       = local.is_auth_tokens_enabled
   name        = "${var.waf_prefix}-generic-detect-bad-auth-tokens"
