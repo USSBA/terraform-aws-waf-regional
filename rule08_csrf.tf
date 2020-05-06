@@ -15,6 +15,8 @@ resource "aws_wafregional_rule" "enforce_csrf" {
     type    = "SizeConstraint"
   }
 }
+
+# Apply only to POST
 resource "aws_wafregional_byte_match_set" "match_csrf_method" {
   count = local.is_csrf_enabled
   name  = "${var.waf_prefix}-generic-match-csrf-method"
@@ -28,6 +30,8 @@ resource "aws_wafregional_byte_match_set" "match_csrf_method" {
     }
   }
 }
+
+# Confirm the CSRF Header matches the size expected
 resource "aws_wafregional_size_constraint_set" "csrf_token_set" {
   count = local.is_csrf_enabled
   name  = "${var.waf_prefix}-generic-match-csrf-token"
