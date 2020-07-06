@@ -10,6 +10,11 @@ executors:
   docker-poirot:
     docker:
       - image: ussba/poirot:3
+  terraform:
+    docker:
+      #TODO: Move to full release when published
+      - image: hashicorp/terraform:0.13.0-beta3
+      #- image: hashicorp/terraform:light
 
 commands:
   poirotscan:
@@ -43,8 +48,7 @@ jobs:
     steps:
     - poirotscan
   terraform:
-    docker:
-    - image: hashicorp/terraform:light
+    executor: terraform
     steps:
     - terraformscan
 
