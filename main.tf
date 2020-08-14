@@ -1,7 +1,7 @@
 terraform {
   required_version = "~> 0.12.9"
   required_providers {
-    aws = "~> 2.30"
+    aws = ">= 2.42, < 4.0"
   }
 }
 data "aws_caller_identity" "current" {}
