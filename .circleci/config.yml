@@ -1,60 +1,31 @@
 version: 2.1
 
 executors:
-  default:
-    docker:
-      - image: circleci/node
-  docker-awscli:
-    docker:
-      - image: ussba/cc-docker-git-aws
-  docker-poirot:
-    docker:
-      - image: ussba/poirot:3
   terraform:
     docker:
-      #TODO: Move to full release when published
-      - image: hashicorp/terraform:0.13.0-beta3
-      #- image: hashicorp/terraform:light
-
-commands:
-  poirotscan:
-    steps:
-    - checkout
-    - run:
-        name: Poirot (PII) Scan
-        command: |
-          poirot --patterns https://raw.githubusercontent.com/USSBA/terraform-aws-waf-regional/master/poirot-patterns.txt --revlist="master^..HEAD"
-  terraformscan:
-    steps:
-    - checkout
-    - run:
-        name: Terraform Init
-        command: |
-          terraform init
-    - run:
-        name: Terraform Validate
-        command: |
-          # a bug in my opinion, but region must be set for validate to work
-          export AWS_DEFAULT_REGION=us-east-1
-          terraform validate
-    - run:
-        name: Terraform Format Scan
-        command: |
-          terraform fmt -recursive -check
+    - image: hashicorp/terraform:light
 
 jobs:
-  poirot:
-    executor: docker-poirot
-    steps:
-    - poirotscan
-  terraform:
+  terraform-format-check:
     executor: terraform
     steps:
-    - terraformscan
-
+    - checkout
+    - run:
+        name: Check terraform formatting
+        command: |
+          terraform fmt -recursive -check
+  terraform-validation-check:
+    executor: terraform
+    steps:
+    - checkout
+    - run:
+        name: Configure a stub provider for testing
+        command: echo "provider \"aws\" { region = \"us-east-1\" } " > tmp_provider.tf
+    - run: terraform init -backend=false -input=false
+    - run: terraform validate
 workflows:
   version: 2
   branch_workflow:
     jobs:
-    - poirot
-    - terraform
+    - terraform-format-check
+    - terraform-validation-check
